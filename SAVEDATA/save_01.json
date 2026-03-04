@@ -1,0 +1,12 @@
+[
+    {
+        "Character": "Jill",
+        "difficulty": "hard",
+        "location": "placeholder",
+        "health": 100
+    },
+    {
+        "hallway_cutscene": 0,
+        "dining_hall_cutscene": 0
+    }
+]

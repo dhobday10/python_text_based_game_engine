@@ -1,17 +1,35 @@
 import definitions
 
 class Player:
-    def __init__(self, character, difficulty, new=False, save_data = None):
-        # Player attributes
-        if new == True:
-            self.character = character
-            self.difficulty = difficulty
-            self.location = "placeholder"
-            self.health = 100
-        
-        # Global Flags
-        self.hallway_cutscene_seen = 0
-        self.dining_hall_cutscene_seen = 0
+    def __init__(self, character, difficulty, current_room, hp, inventory, flags):
+        self.character = character
+        self.difficulty = difficulty
+        self.current_room = current_room
+        self.hp = hp
+        self.inventory = inventory
+
+
+    @classmethod
+    def new_game(cls, character, difficulty):
+        return cls(character, 
+                   difficulty, 
+                   "foyer_1F", 
+                   100, 
+                   [], 
+                   {}
+                   )
+    
+
+    @classmethod
+    def load_save(cls, save_dict):
+        return cls(
+                    save_dict["character"],
+                    save_dict["difficulty"],
+                    save_dict["location"],
+                    save_dict["health"],
+                    [],
+                    {} # Save game needs to be reconfirgured to write inventory and flags, using a blank list and dict respectively for now
+                    )
 
     
     def to_dict(self):
@@ -22,8 +40,22 @@ class Player:
             "health": self.health 
         }
 
+        #Flags section will be moved to GameState class eventually
         flags = {
             "hallway_cutscene": self.hallway_cutscene_seen,
-            "dining_hall_cutscene": self.dining_hall_cutscene_seen
+            "dining_hall_cutscene": self.dining_hall_cutscene_seen 
         }
         return (player_status, flags)
+
+
+class GameState():
+    def __init__(self, room_flags, global_flags):
+        ...
+
+    @classmethod
+    def new_game(cls):
+        ...
+    
+    @classmethod
+    def load_save(cls):
+        ...

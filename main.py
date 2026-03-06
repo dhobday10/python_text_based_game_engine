@@ -13,7 +13,7 @@ def title_screen():
                         ],
                         title = "Resident Evil"
                         )
-    action()
+    action[0]()
 
 
 def new_game():
@@ -31,7 +31,7 @@ def new_game():
                         ("Like taking a walk.", "very_easy")
                         ])
     
-    player = saves.models.Player([character, difficulty, True])
+    player = saves.models.Player.new_game(character, difficulty)
    
 
 def load_save():

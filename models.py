@@ -49,13 +49,34 @@ class Player:
 
 
 class GameState():
-    def __init__(self, room_flags, global_flags):
-        ...
+    def __init__(self, room_states, global_flags): # for now, global flags does nothing
+        self.roomstates = room_states
 
     @classmethod
     def new_game(cls):
-        ...
+        room_states = { 
+            "foyer_1F": {
+                "items": {
+                    "ink_ribbon": {
+                        "taken": False,
+                        "Quantity": 1
+                    }
+                },
+                "actions": {
+                    "Use Typewriter": "save_game",
+                    "Go to Dining Hall": "enter_room",
+                    "Go up the Stairs": "climb_stairs"
+                },
+                "flags": {
+                    "intro_cutscene_seen_foyer_1F": False
+                }
+            },
+
+            "dining_hall_1F": {}
+        }
+
+        return cls(room_states)
     
     @classmethod
-    def load_save(cls):
-        ...
+    def load_save(cls, save_dict):
+        print(save_dict)

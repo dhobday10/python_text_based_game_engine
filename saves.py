@@ -23,6 +23,10 @@ def init_index(max_slots= 8):
 def save_serializer(raw):
     # exists solely to catch the player save's current status and convert it to json
     return raw.to_dict()
+
+
+def save_deserializer():
+    ...
     
  
 def write_save(slot, save_json, existing = False):

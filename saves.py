@@ -13,7 +13,7 @@ def init_index(max_slots= 8):
     if not INDEX.exists():
         save = []
         for i in range(max_slots):
-            save.append(("Empty Slot", f"slot_{i}"))
+            save.append(("Empty Slot", f"save_{i}"))
         with open(INDEX, "w") as file:
             json.dump(save, file, indent=4)
     
@@ -25,7 +25,17 @@ def save_serializer(raw):
     return raw.to_dict()
 
 
-def save_deserializer():
+def get_save(save_num):
+    save_dir = Path(f'SAVEDATA/{save_num[0]}{save_num[1]}.json')    
+
+    if save_dir.exists():
+        return save_dir
+    else:
+        return False
+    
+
+
+def save_deserializer(save_num):
     ...
     
  

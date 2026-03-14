@@ -39,7 +39,7 @@ def load_save():
     with open(INDEX, "r") as file:
        choice = ui_menu(json.load(file), title = "Save Data")
     
-    print(choice)
+    saves.get_save(choice)
 
 
 def exit_game():

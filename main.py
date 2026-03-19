@@ -1,6 +1,6 @@
 from ui import ui_menu, yes_no, clear_screen, slowtype
 import saves
-from saves import SaveExists
+from saves import SaveExists, NoSaveFound
 import json, sys
 
 
@@ -22,24 +22,26 @@ def new_game():
                         ("Chris Redfield", "Chris"),
                         ("Jill Valentine", "Jill"),       
                         ],
-                        title = "Select a Character"
-
+                        title = "Select a Character",
+                        back_function= title_screen
                         )
+    
     difficulty = ui_menu([
                         ("Like climbing a mountain.", "hard"),
                         ("Like going on a hike.", "easy"),
                         ("Like taking a walk.", "very_easy")
-                        ])
+                        ],
+                        back_function=new_game)
     
     player = saves.models.Player.new_game(character, difficulty)
    
 
-def load_save():
+def load_save(title = "Save Data"):
     INDEX = saves.init_index()
     with open(INDEX, "r") as file:
-       choice = ui_menu(json.load(file), title = "Save Data")
+       choice = ui_menu(json.load(file), back_function=title_screen, title = title)
     
-    saves.get_save(choice)
+    # Consider implementations here
 
 
 def exit_game():

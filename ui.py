@@ -12,7 +12,7 @@ def validate(options, max):
         print("Invalid Choice")
 
 
-def ui_menu(options, title = ''):
+def ui_menu(options, title = '', back_function = None):
     clear_screen()
 
     if title != '':
@@ -21,6 +21,10 @@ def ui_menu(options, title = ''):
     for num, opt in enumerate(options, start = 1):
         print(f"{num}. {opt[0]}")
     
+    if back_function:
+        options.append(("Previous Menu", back_function))
+        print(f"{num+1}. (Previous Menu)")
+
     return validate(options, len(options))
 
 

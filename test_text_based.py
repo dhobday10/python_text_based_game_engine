@@ -1,5 +1,6 @@
 import saves
 import main
+import ui
 
 class Player:
     def __init__(self, character, difficulty, new=False):
@@ -30,5 +31,4 @@ class Player:
 
 player = Player("Jill", "hard")
 
-main.load_save()
 

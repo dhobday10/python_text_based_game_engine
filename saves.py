@@ -1,9 +1,13 @@
 import json
 import models
 from pathlib import Path
+from ui import ui_menu
 
 class SaveExists(Exception):
     """Exception raised when user attempts to write over an existing save"""
+
+class NoSaveFound(Exception):
+    """When the user attempts to load an empty save slot"""
 
 def init_index(max_slots= 8):
     save_dir = Path('SAVEDATA')
@@ -27,12 +31,14 @@ def save_serializer(raw):
 
 def get_save(save_num):
     save_dir = Path(f'SAVEDATA/{save_num[0]}{save_num[1]}.json')    
-
-    if save_dir.exists():
-        return save_dir
-    else:
-        return False
+    return validate_save(save_dir)
     
+    
+def validate_save(save_dir):
+    if save_dir.exists():
+        save_deserializer(save_dir)
+    else:
+        raise NoSaveFound
 
 
 def save_deserializer(save_num):

@@ -35,7 +35,7 @@ def get_save(save_num):
     
     
 def validate_save(save_dir):
-    if save_dir.exists():
+    if save_dir.exists() == True:
         save_deserializer(save_dir)
     else:
         raise NoSaveFound

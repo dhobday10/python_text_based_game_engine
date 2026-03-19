@@ -41,7 +41,10 @@ def load_save(title = "Save Data"):
     with open(INDEX, "r") as file:
        choice = ui_menu(json.load(file), back_function=title_screen, title = title)
     
-    # Consider implementations here
+    try:
+        save_json = saves.get_save(choice)
+    except NoSaveFound:
+        load_save(title="Resident Evil\nNo save found in selected slot. Please select a different slot or return to main menu.")
 
 
 def exit_game():

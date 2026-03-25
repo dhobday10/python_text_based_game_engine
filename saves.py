@@ -17,7 +17,7 @@ def init_index(max_slots= 8):
     if not INDEX.exists():
         save = []
         for i in range(max_slots):
-            save.append(("Empty Slot", f"save_{i}"))
+            save.append(("Empty Slot", f"save_0{i}"))
         with open(INDEX, "w") as file:
             json.dump(save, file, indent=4)
     
@@ -28,21 +28,22 @@ def save_serializer(raw):
     # exists solely to catch the player save's current status and convert it to json
     return raw.to_dict()
 
+ 
+def validate_save(save_num):
+    file_name = f"save_0{save_num[1]}"
+    save_dir = Path(f'SAVEDATA/{file_name}.json')  
 
-def get_save(save_num):
-    save_dir = Path(f'SAVEDATA/{save_num[0]}{save_num[1]}.json')    
-    return validate_save(save_dir)
-    
-    
-def validate_save(save_dir):
     if save_dir.exists() == True:
-        save_deserializer(save_dir)
+        return save_deserializer(save_dir)
     else:
         raise NoSaveFound
 
 
-def save_deserializer(save_num):
-    ...
+def save_deserializer(save_json):
+    with open (save_json, "r") as file:
+        deserialized_save = json.load(file)
+    
+    return deserialized_save
     
  
 def write_save(slot, save_json, existing = False):

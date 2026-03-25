@@ -37,14 +37,24 @@ def new_game():
    
 
 def load_save(title = "Save Data"):
-    INDEX = saves.init_index()
-    with open(INDEX, "r") as file:
-       choice = ui_menu(json.load(file), back_function=title_screen, title = title)
+    save_dict = prompt_for_existing_save()
+    print(save_dict[0]['Character'])
+
+
+def prompt_for_existing_save(title = "Load Save"):
+    index_path = saves.init_index()
+
+    while True:
+        with open(index_path, "r") as file:
+            choice = ui_menu(json.load(file), title=title, back_function=title_screen)
     
-    try:
-        save_json = saves.get_save(choice)
-    except NoSaveFound:
-        load_save(title="Resident Evil\nNo save found in selected slot. Please select a different slot or return to main menu.")
+        try:
+            return saves.validate_save(choice)
+        except NoSaveFound:
+            prompt_for_existing_save(title="No save data found in specified slot. Please select another slot or return to the title screen.")
+        
+    
+   
 
 
 def exit_game():
@@ -53,6 +63,7 @@ def exit_game():
         sys.exit()
     else:
         title_screen()   
+
 
 def save_game(raw_object):
     serialized = saves.save_serializer(raw_object)

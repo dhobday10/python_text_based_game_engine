@@ -31,4 +31,4 @@ class Player:
 
 player = Player("Jill", "hard")
 
-
+main.save_game(player)

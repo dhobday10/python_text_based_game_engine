@@ -1,4 +1,5 @@
 from ui import ui_menu, yes_no, clear_screen, slowtype
+import ui
 import saves
 from saves import SaveExists, NoSaveFound
 import json, sys
@@ -13,32 +14,60 @@ def title_screen():
                         ],
                         title = "Resident Evil"
                         )
-    action[0]()
+    return action[0]
+
+
+def pre_game_menu_loop(function_to_run = None):
+    function_to_run = title_screen()
+
+    # runs until game is started
+    while True:
+        result = function_to_run()
+
+        if callable(result):
+            function_to_run = result
+        else:
+            break
+    
+    game_loop(result)
+        
+
+
+
+def game_loop(raw_save_data):
+    print("We've reached the game! What do we do now?")
 
 
 def new_game():
     saves.init_index()
-    character = ui_menu([
-                        ("Chris Redfield", "Chris"),
-                        ("Jill Valentine", "Jill"),       
-                        ],
-                        title = "Select a Character",
-                        back_function= title_screen
-                        )
-    
-    difficulty = ui_menu([
-                        ("Like climbing a mountain.", "hard"),
-                        ("Like going on a hike.", "easy"),
-                        ("Like taking a walk.", "very_easy")
-                        ],
-                        back_function=new_game)
-    
-    player = saves.models.Player.new_game(character, difficulty)
-   
+    while True:
+        character = ui_menu([
+            ("Chris Redfield", "Chris"),
+            ("Jill Valentine", "Jill"),       
+            ],
+            title = "Select a Character",
+            allow_back= True
+            )
+        
+        if character == "BACK":
+            return title_screen
 
-def load_save(title = "Save Data"):
-    save_dict = prompt_for_existing_save()
-    print(save_dict[0]['Character'])
+        while True: 
+            difficulty = ui_menu([
+                ("Like climbing a mountain.", "hard"),
+                ("Like going on a hike.", "easy"),
+                ("Like taking a walk.", "very_easy")
+                ],
+                allow_back= True)
+            
+            if difficulty == "BACK":
+                break
+        
+            return (character, difficulty)
+
+
+def load_save():
+    return prompt_for_existing_save()
 
 
 def prompt_for_existing_save(title = "Load Save"):
@@ -46,16 +75,16 @@ def prompt_for_existing_save(title = "Load Save"):
 
     while True:
         with open(index_path, "r") as file:
-            choice = ui_menu(json.load(file), title=title, back_function=title_screen)
+            choice = ui_menu(json.load(file), title=title, allow_back= True)
+
+            if choice == "BACK":
+                return title_screen
     
         try:
             return saves.validate_save(choice)
         except NoSaveFound:
             prompt_for_existing_save(title="No save data found in specified slot. Please select another slot or return to the title screen.")
-        
-    
-   
-
+      
 
 def exit_game():
     if yes_no("Quit the game?") == True:
@@ -84,10 +113,5 @@ def save_game(raw_object):
     saves.update_index(choice[1], raw_object)
 
 
-def main(save):
-
-    ...
-
-
 if __name__ == "__main__":
-    title_screen()
+    pre_game_menu_loop()

@@ -6,13 +6,15 @@ def validate(options, max):
     while True:
         prompt = input("")
         for option in range(1, max + 1):
-            if str(option) == prompt:
+            if option == int(prompt) and options[option-1][0] == "Previous Menu":
+                return "BACK"
+            elif option == int(prompt):
                 return (options[option-1][1], option)
             
         print("Invalid Choice")
 
 
-def ui_menu(options, title = '', back_function = None):
+def ui_menu(options, title = '', allow_back = False):
     clear_screen()
 
     if title != '':
@@ -21,9 +23,11 @@ def ui_menu(options, title = '', back_function = None):
     for num, opt in enumerate(options, start = 1):
         print(f"{num}. {opt[0]}")
     
-    if back_function:
-        options.append(("Previous Menu", back_function))
+    if allow_back:
+        appended_menu = options.copy()
+        appended_menu.append(("Previous Menu", allow_back))
         print(f"{num+1}. (Previous Menu)")
+        return validate(appended_menu, len(appended_menu))
 
     return validate(options, len(options))
 

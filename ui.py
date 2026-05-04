@@ -2,16 +2,21 @@ from time import sleep
 from os import name, system
 import sys
 
+
 def validate(options, max):
     while True:
         prompt = input("")
+        try:
+            prompt = int(prompt)
+        except ValueError:
+            print("Please input a number.")
+            continue
+
         for option in range(1, max + 1):
-            if option == int(prompt) and options[option-1][0] == "Previous Menu":
-                return "BACK"
-            elif option == int(prompt):
+            if option == prompt:
                 return (options[option-1][1], option)
             
-        print("Invalid Choice")
+        print("Please input a number from the presented options.")
 
 
 def ui_menu(options, title = '', allow_back = False):
@@ -25,7 +30,7 @@ def ui_menu(options, title = '', allow_back = False):
     
     if allow_back:
         appended_menu = options.copy()
-        appended_menu.append(("Previous Menu", allow_back))
+        appended_menu.append(("Previous Menu", "__BACK__"))
         print(f"{num+1}. (Previous Menu)")
         return validate(appended_menu, len(appended_menu))
 
@@ -47,11 +52,13 @@ def yes_no(question):
         
         print("Invalid Choice")
 
+
 def clear_screen():
     if name == 'nt':
         _ = system('cls')
     else:
         _ = system('clear')
+
 
 def slowtype(text):
     clear_screen()

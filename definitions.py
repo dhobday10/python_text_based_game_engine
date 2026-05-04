@@ -1,5 +1,3 @@
-# static elements for each room
-
 ROOM_DEFINITIONS = {
         "foyer_1F": {
             "name": "Foyer 1F",
@@ -9,7 +7,12 @@ ROOM_DEFINITIONS = {
                 "north": "central_stairway",
                 "west": "dining_hall",
                 "east": "statue_room"
-                    }
+            },
+
+            "flags": {
+                "intro_cutscene_seen": False,
+                "returned_to_foyer_1F": False
+            }
                     },  
 
 
@@ -20,16 +23,21 @@ ROOM_DEFINITIONS = {
             "exits": {
                 "east": "foyer_1F",
                 "north": "dining_hall_hallway"
-                     },
+            },
+
+            "flags": {
+                "first_time_entering_cutscene_seen": False,
+                "second_time_entering_cutscene_seen": False
+            },
 
             "items": {
                 "left": "ink_ribbon",
                 "rear": "crest"
-                     },
+            },
 
             "interactables": {
-                ...
-                    }
+                "Typewriter": "save_game"
+            }
         }
     }
 

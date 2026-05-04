@@ -3,11 +3,14 @@ import models
 from pathlib import Path
 from ui import ui_menu
 
+
 class SaveExists(Exception):
     """Exception raised when user attempts to write over an existing save"""
 
+
 class NoSaveFound(Exception):
     """When the user attempts to load an empty save slot"""
+
 
 def init_index(max_slots= 8):
     save_dir = Path('SAVEDATA')
@@ -24,9 +27,9 @@ def init_index(max_slots= 8):
     return INDEX
 
 
-def save_serializer(raw):
+def save_serializer(raw_player, raw_gamestate):
     # exists solely to catch the player save's current status and convert it to json
-    return raw.to_dict()
+    return raw_player.to_dict(), raw_gamestate.to_dict()
 
  
 def validate_save(save_num):

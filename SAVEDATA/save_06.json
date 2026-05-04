@@ -1,12 +1,23 @@
 [
     {
-        "Character": "Jill",
-        "difficulty": "hard",
-        "location": "placeholder",
-        "health": 100
+        "PLAYER_DATA": {
+            "character": "Chris",
+            "difficulty": "hard",
+            "current_room": "foyer_1F",
+            "hp": 100,
+            "inventory": []
+        }
     },
     {
-        "hallway_cutscene": 0,
-        "dining_hall_cutscene": 0
+        "ROOMS": {
+            "foyer_1F": {
+                "flags": {},
+                "items_taken": []
+            },
+            "dining_hall": {
+                "flags": {},
+                "items_taken": []
+            }
+        }
     }
 ]

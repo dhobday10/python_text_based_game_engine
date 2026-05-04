@@ -1,7 +1,7 @@
 import definitions
 
 class Player:
-    def __init__(self, character, difficulty, current_room, hp, inventory, flags):
+    def __init__(self, character, difficulty, current_room, hp, inventory):
         self.character = character
         self.difficulty = difficulty
         self.current_room = current_room
@@ -15,8 +15,7 @@ class Player:
                    difficulty, 
                    "foyer_1F", 
                    100, 
-                   [], 
-                   {}
+                   inventory = [], 
                    )
     
 
@@ -25,58 +24,63 @@ class Player:
         return cls(
                     save_dict["character"],
                     save_dict["difficulty"],
-                    save_dict["location"],
-                    save_dict["health"],
-                    [],
-                    {} # Save game needs to be reconfirgured to write inventory and flags, using a blank list and dict respectively for now
+                    save_dict["current_room"],
+                    save_dict["hp"],
+                    inventory = []
                     )
 
     
     def to_dict(self):
         player_status = {
-            "Character": self.character,
+            "PLAYER_DATA": {
+            "character": self.character,
             "difficulty": self.difficulty,
-            "location": self.location,
-            "health": self.health 
+            "current_room": self.current_room,
+            "hp": self.hp,
+            "inventory": self.inventory
+            }
         }
 
-        #Flags section will be moved to GameState class eventually
-        flags = {
-            "hallway_cutscene": self.hallway_cutscene_seen,
-            "dining_hall_cutscene": self.dining_hall_cutscene_seen 
-        }
-        return (player_status, flags)
+
+        return (player_status)
 
 
 class GameState():
     def __init__(self, room_states, global_flags): # for now, global flags does nothing
         self.roomstates = room_states
 
+
     @classmethod
     def new_game(cls):
-        room_states = { 
-            "foyer_1F": {
-                "items": {
-                    "ink_ribbon": {
-                        "taken": False,
-                        "Quantity": 1
-                    }
-                },
-                "actions": {
-                    "Use Typewriter": "save_game",
-                    "Go to Dining Hall": "enter_room",
-                    "Go up the Stairs": "climb_stairs"
-                },
-                "flags": {
-                    "intro_cutscene_seen_foyer_1F": False
-                }
-            },
+        room_states = {}
+        for room, room_state in definitions.ROOM_DEFINITIONS.items():
+            room_states[room] = {
+                "flags": {},
+                "items_taken": []
+            }
 
-            "dining_hall_1F": {}
-        }
-
-        return cls(room_states)
+        return cls(room_states, {})
+    
     
     @classmethod
     def load_save(cls, save_dict):
-        print(save_dict)
+        return cls(save_dict, {})
+
+
+    def to_dict(self):
+        room_states_to_save = {}
+
+        room_states_to_save["ROOMS"] = {}
+        for room, room_state in self.roomstates.items():
+            room_states_to_save["ROOMS"][room] = {
+                "flags": room_state["flags"],
+                "items_taken": room_state["items_taken"]
+            }
+        
+        return room_states_to_save
+
+
+
+
+   
+

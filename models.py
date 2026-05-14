@@ -29,7 +29,11 @@ class Player:
                     inventory = []
                     )
 
-    
+
+    def get_room(self):
+        return self.current_room
+
+
     def to_dict(self):
         player_status = {
             "PLAYER_DATA": {
@@ -47,7 +51,7 @@ class Player:
 
 class GameState():
     def __init__(self, room_states, global_flags): # for now, global flags does nothing
-        self.roomstates = room_states
+        self.room_states = room_states
 
 
     @classmethod

@@ -9,11 +9,20 @@ ROOM_DEFINITIONS = {
                 "east": "statue_room"
             },
 
-            "flags": {
-                "intro_cutscene_seen": False,
-                "returned_to_foyer_1F": False
+            "events": {
+                "on_first_enter": "foyer_intro",
+            },
+
+            "items": {
+                "ink_ribbon": 2
+            },
+
+            "interactables": {
+                "typewriter"
             }
                     },  
+                
+            
 
 
         "dining_hall": {
@@ -25,9 +34,8 @@ ROOM_DEFINITIONS = {
                 "north": "dining_hall_hallway"
             },
 
-            "flags": {
-                "first_time_entering_cutscene_seen": False,
-                "second_time_entering_cutscene_seen": False
+            "events": {
+                "on_first_enter": "dining_hall_intro",
             },
 
             "items": {
@@ -40,4 +48,3 @@ ROOM_DEFINITIONS = {
             }
         }
     }
-

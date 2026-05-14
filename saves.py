@@ -1,7 +1,5 @@
 import json
-import models
 from pathlib import Path
-from ui import ui_menu
 
 
 class SaveExists(Exception):
@@ -33,7 +31,8 @@ def save_serializer(raw_player, raw_gamestate):
 
  
 def validate_save(save_num):
-    file_name = f"save_0{save_num[1]}"
+    print(save_num)
+    file_name = f"save_0{save_num}"
     save_dir = Path(f'SAVEDATA/{file_name}.json')  
 
     if save_dir.exists() == True:
@@ -51,7 +50,7 @@ def save_deserializer(save_json):
  
 def write_save(slot, save_json, existing = False):
     save_dir = Path('SAVEDATA')
-    save_file = save_dir / f"save_0{slot[1]}.json"
+    save_file = save_dir / f"save_0{slot}.json"
     
     if save_file.exists() and existing == False:
         raise SaveExists()

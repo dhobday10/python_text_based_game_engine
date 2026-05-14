@@ -5,7 +5,9 @@ import sys
 
 def validate(options, max):
     while True:
+
         prompt = input("")
+
         try:
             prompt = int(prompt)
         except ValueError:
@@ -14,12 +16,13 @@ def validate(options, max):
 
         for option in range(1, max + 1):
             if option == prompt:
-                return (options[option-1][1], option)
+                return (option, options[option-1][1]) # options[option-1][0] is the index, options[option-1][1] is the function
+            
             
         print("Please input a number from the presented options.")
 
 
-def ui_menu(options, title = '', allow_back = False):
+def ui_menu(options, title = '', allow_back = False, return_index = False):
     clear_screen()
 
     if title != '':
@@ -28,13 +31,21 @@ def ui_menu(options, title = '', allow_back = False):
     for num, opt in enumerate(options, start = 1):
         print(f"{num}. {opt[0]}")
     
+    
     if allow_back:
-        appended_menu = options.copy()
-        appended_menu.append(("Previous Menu", "__BACK__"))
+        appended_options = options.copy()
+        appended_options.append(("Previous Menu", "__BACK__"))
         print(f"{num+1}. (Previous Menu)")
-        return validate(appended_menu, len(appended_menu))
+        selection = validate(appended_options, len(appended_options))
+    else:
+        selection = validate(options, len(options))
 
-    return validate(options, len(options))
+
+    if return_index:
+        return selection
+    else:
+        return selection[1]
+    
 
 
 def yes_no(question): 

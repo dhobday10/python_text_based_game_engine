@@ -1,9 +1,8 @@
-from ui import ui_menu, yes_no, clear_screen, slowtype
-import ui
-import saves
+from ui import ui_menu, yes_no, clear_screen
+import saves, models, game
 from saves import SaveExists, NoSaveFound
 import json, sys
-import models
+
 
 
 def title_screen():
@@ -13,9 +12,9 @@ def title_screen():
                         ("Load Save", load_save),
                         ("Exit", exit_game)
                         ],
-                        title = "Resident Evil"
+                        title = "Resident Evil",
                         )
-    return action[0]
+    return action
 
 
 def pre_game_menu_loop(function_to_run = None):
@@ -30,12 +29,8 @@ def pre_game_menu_loop(function_to_run = None):
         else:
             break
     
-    game_loop()
+    game.game_loop(result[0], result[1])
         
-
-def game_loop():
-    print("We've reached the game! What do we do now?")
-
 
 def new_game():
     saves.init_index()
@@ -48,7 +43,7 @@ def new_game():
             allow_back= True
             )
         
-        if character[0] == "__BACK__":
+        if character == "__BACK__":
             return title_screen
 
         while True: 
@@ -59,12 +54,12 @@ def new_game():
                 ],
                 allow_back= True)
             
-            if difficulty[0] == "__BACK__":
+            if difficulty == "__BACK__":
                 break
         
             player = models.Player.new_game(character, difficulty)
             game_state = models.GameState.new_game()
-            return player, game_state
+            return (player, game_state)
 
 
 def load_save():
@@ -74,7 +69,7 @@ def load_save():
     else:
         player = models.Player.load_save(save_data[0]['PLAYER_DATA'])
         game_state = models.GameState.load_save(save_data[1]['ROOMS'])
-        return player, game_state
+        return (player, game_state)
 
           
 def prompt_for_existing_save(title = "Load Save"):
@@ -82,13 +77,13 @@ def prompt_for_existing_save(title = "Load Save"):
 
     while True:
         with open(index_path, "r") as file:
-            choice = ui_menu(json.load(file), title=title, allow_back= True)
-            
-            if choice[0] == "__BACK__":
+            choice = ui_menu(json.load(file), title=title, allow_back= True, return_index= True)
+
+            if choice[1] == "__BACK__":
                 return title_screen
     
         try:
-            return saves.validate_save(choice)
+            return saves.validate_save(choice[0])
         except NoSaveFound:
             title = "No save data found in specified slot. Please select another slot or return to the title screen."
       
@@ -110,18 +105,18 @@ def save_game(player, game_state):
         with open(INDEX, "r") as file:
             choice = ui_menu(json.load(file), title = "Save Data", allow_back= True)
         
-        if choice[0] == "__BACK__":
+        if choice[1] == "__BACK__":
             return choice
 
         try:
-            saves.write_save(choice, serialized_save, existing = False)
+            saves.write_save(choice[0], serialized_save, existing = False)
             break
         except SaveExists:
             if yes_no("There is already save data written to this slot. Would you like to overwrite it?"):
                 saves.write_save(choice, serialized_save, existing = True)
                 break
             
-    saves.update_index(choice[1], player)
+    saves.update_index(choice[0], player)
 
 
 if __name__ == "__main__":

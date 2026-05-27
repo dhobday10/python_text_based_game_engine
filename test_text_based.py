@@ -28,7 +28,3 @@ class Player:
         }   
         return (player_status, flags)
 
-
-player = Player("Jill", "hard")
-
-main.new_game()

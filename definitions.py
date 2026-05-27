@@ -29,22 +29,37 @@ ROOM_DEFINITIONS = {
             "name": "Dining Hall",
             "description": "A dimly lit dining hall, a grandfather clock ticks rythmically, the fireplace crackles faintly against the back wall.",
 
-            "exits": {
-                "east": "foyer_1F",
-                "north": "dining_hall_hallway"
-            },
-
             "events": {
                 "on_first_enter": "dining_hall_intro",
             },
 
-            "items": {
-                "left": "ink_ribbon",
-                "rear": "crest"
-            },
+            "actions": {
 
-            "interactables": {
-                "Typewriter": "save_game"
+                "items": {
+                    "action_description": "Scan the room for useful items",
+
+                    "default_contents": {
+                        "ink_ribbon": "Ink Ribbon",
+                        "fireplace_crest": "Fireplace Crest"
+                    },
+
+                    "quantities": {
+                        "ink_ribbon": 3,
+                        "fireplace_crest": 1
+                    }
+                },
+
+                "interactables": {
+                    "action_description": "Look for anything you can interact with",
+                    "Typewriter": "save_game"
+                },
+
+                "exits": {
+                    "action_description": "Search for exit routes",
+                    "east": "foyer_1F",
+                    "north": "dining_hall_hallway"
+                }
+            
             }
         }
     }

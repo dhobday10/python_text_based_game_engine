@@ -3,6 +3,7 @@ from os import name, system
 import sys
 
 
+
 def validate(options, max):
     while True:
 
@@ -72,13 +73,13 @@ def clear_screen():
 
 
 def slowtype(text):
-    clear_screen()
     for char in text:
         if char == ".":
-            sleep(0.15)
-            sys.stdout.write(char)
-        else:    
+            sleep(0.40)
             sys.stdout.write(char)
             sys.stdout.flush()
+        else:    
             sleep(0.15)
+            sys.stdout.write(char)
+            sys.stdout.flush()
     print()
